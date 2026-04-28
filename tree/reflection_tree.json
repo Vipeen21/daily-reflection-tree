@@ -1,0 +1,73 @@
+{
+  "start_node": "START",
+  "nodes": {
+    "START": { "type": "start", "text": "Good evening. Let's process your day with clarity.", "target": "A1_OPEN" },
+    "A1_OPEN": {
+      "type": "question",
+      "text": "How would you describe today in one word?",
+      "options": {
+        "Productive": "A1_D1",
+        "Mixed": "A1_D1",
+        "Tough": "A1_D1",
+        "Frustrating": "A1_D1"
+      }
+    },
+    "A1_D1": {
+      "type": "decision",
+      "logic": "answer=Productive|Mixed:A1_Q_AGENCY_HIGH;answer=Tough|Frustrating:A1_Q_AGENCY_LOW"
+    },
+    "A1_Q_AGENCY_HIGH": {
+      "type": "question",
+      "text": "Today was {A1_OPEN}. What was the primary driver of this success?",
+      "options": {
+        "My deliberate planning": "A1_R_INT",
+        "The team's execution": "A1_R_INT",
+        "Favorable circumstances": "A1_R_EXT",
+        "Pure luck": "A1_R_EXT"
+      },
+      "signals": { "My deliberate planning": "axis1:internal", "The team's execution": "axis1:internal", "Favorable circumstances": "axis1:external", "Pure luck": "axis1:external" }
+    },
+    "A1_Q_AGENCY_LOW": {
+      "type": "question",
+      "text": "Since today felt {A1_OPEN}, what was your first instinct when things got difficult?",
+      "options": {
+        "Identify what I could control": "A1_R_INT",
+        "Wait for someone to step in": "A1_R_EXT",
+        "Push through alone": "A1_R_INT",
+        "Feel stuck": "A1_R_EXT"
+      },
+      "signals": { "Identify what I could control": "axis1:internal", "Wait for someone to step in": "axis1:external", "Push through alone": "axis1:internal", "Feel stuck": "axis1:external" }
+    },
+    "A1_R_INT": { "type": "reflection", "text": "You're leaning into agency. Even on a {A1_OPEN} day, you stayed in the driver's seat.", "target": "BRIDGE_1_2" },
+    "A1_R_EXT": { "type": "reflection", "text": "A {A1_OPEN} day can pull focus outward. Growth happens when we find the small lever we still control.", "target": "BRIDGE_1_2" },
+    "BRIDGE_1_2": { "type": "bridge", "text": "Now, let's shift from how you handled the day (Locus) to what you gave (Orientation).", "target": "A2_OPEN" },
+    "A2_OPEN": {
+      "type": "question",
+      "text": "Think about a key interaction today. Which best describes it?",
+      "options": {
+        "I helped a colleague with their blocker": "A2_R_CONT",
+        "I felt ignored despite my hard work": "A2_R_ENT",
+        "I did extra without being asked": "A2_R_CONT",
+        "I felt frustrated others weren't helping": "A2_R_ENT"
+      },
+      "signals": { "I helped a colleague with their blocker": "axis2:contribution", "I felt ignored despite my hard work": "axis2:entitlement", "I did extra without being asked": "axis2:contribution", "I felt frustrated others weren't helping": "axis2:entitlement" }
+    },
+    "A2_R_CONT": { "type": "reflection", "text": "Giving energy back is what builds Organizational Citizenship. Great focus.", "target": "BRIDGE_2_3" },
+    "A2_R_ENT": { "type": "reflection", "text": "Focusing on what we are 'owed' often creates invisible friction. Noticing it is the first step out.", "target": "BRIDGE_2_3" },
+    "BRIDGE_2_3": { "type": "bridge", "text": "Finally, let's widen the lens. How large was your world today?", "target": "A3_OPEN" },
+    "A3_OPEN": {
+      "type": "question",
+      "text": "When you think about the day's biggest challenge, who comes to mind?",
+      "options": {
+        "Just me - it was my problem": "A3_R_SELF",
+        "The team - we were all affected": "A3_R_ALTRO",
+        "The end user we are serving": "A3_R_ALTRO"
+      },
+      "signals": { "Just me - it was my problem": "axis3:self", "The team - we were all affected": "axis3:altro", "The end user we are serving": "axis3:altro" }
+    },
+    "A3_R_SELF": { "type": "reflection", "text": "Self-centrism is natural during stress, but widening that radius reduces the pain.", "target": "SUMMARY" },
+    "A3_R_ALTRO": { "type": "reflection", "text": "You are seeing the 'Us' in the 'Me'. That is professional maturity.", "target": "SUMMARY" },
+    "SUMMARY": { "type": "summary", "text": "Today you leaned {axis1_dominant} on agency and {axis2_dominant} on contribution. You described today as {A1_OPEN}.", "target": "END" },
+    "END": { "type": "end", "text": "Reflection complete. See you tomorrow." }
+  }
+}
